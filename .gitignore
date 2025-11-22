@@ -1,2 +1,46 @@
-.vs
-bin
+## Ignorar archivos generados por Visual Studio, VS Code y Rider
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Ignorar carpetas de compilación
+bin/
+obj/
+
+## Ignorar paquetes NuGet
+packages/
+*.nupkg
+
+## Ignorar archivos de compilación
+*.dll
+*.exe
+*.pdb
+*.cache
+
+## Ignorar archivos de registro y datos temporales
+*.log
+*.tmp
+*.temp
+
+## Ignorar archivos específicos de ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## Ignorar archivos de publicación y despliegue
+**/publish/
+**/PublishProfiles/
+*.pubxml
+*.publishsettings
+
+## Ignorar archivos de prueba
+TestResults/
+[Tt]est[Rr]esult*/
+
+## Ignorar archivos específicos del sistema operativo
+Thumbs.db
+.DS_Store
