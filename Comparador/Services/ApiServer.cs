@@ -51,6 +51,9 @@ namespace Comparador.Services
 
                             app.UseEndpoints(endpoints =>
                             {
+                                // Endpoint raíz para validar que el servidor está funcionando
+                                endpoints.MapGet("/", HandleRootAsync);
+
                                 // Endpoint para subir archivos
                                 endpoints.MapPost("/upload", HandleUploadAsync);
 
@@ -212,6 +215,37 @@ namespace Comparador.Services
             {
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsync($"Error durante la comparación: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Maneja la solicitud al endpoint raíz
+        /// </summary>
+        private async Task HandleRootAsync(HttpContext context)
+        {
+            try
+            {
+                context.Response.StatusCode = 200;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonSerializer.Serialize(new
+                {
+                    Status = "OK",
+                    Message = "API del Comparador de Archivos funcionando correctamente",
+                    Version = "1.0",
+                    Endpoints = new[]
+                    {
+                        new { Path = "/", Method = "GET", Description = "Información sobre la API" },
+                        new { Path = "/upload", Method = "POST", Description = "Subir archivos para comparación" },
+                        new { Path = "/compare", Method = "POST", Description = "Realizar comparación entre archivos" },
+                        new { Path = "/stats", Method = "GET", Description = "Obtener estadísticas de los archivos cargados" }
+                    },
+                    Timestamp = DateTime.Now
+                }, _jsonOptions));
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = 500;
+                await context.Response.WriteAsync($"Error en el endpoint raíz: {ex.Message}");
             }
         }
 
