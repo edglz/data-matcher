@@ -1,0 +1,314 @@
+﻿<Window x:Class="Comparador.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Comparador"
+        xmlns:viewmodels="clr-namespace:Comparador.ViewModels"
+        mc:Ignorable="d"
+        Title="Comparador de Archivos" Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Sección de carga de archivos -->
+        <GroupBox Grid.Row="0" Header="Carga de Archivos">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Archivo A -->
+                <StackPanel Grid.Column="0" Margin="5">
+                    <DockPanel>
+                        <Button Content="Cargar Archivo A" Command="{Binding LoadFileACommand}" DockPanel.Dock="Right"/>
+                        <TextBox Text="{Binding FileAPath, Mode=TwoWay}" IsReadOnly="True"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,5">
+                        <TextBlock Text="Separador:" DockPanel.Dock="Left"/>
+                        <ComboBox SelectedValue="{Binding SelectedSeparatorA}" Width="100" HorizontalAlignment="Left">
+                            <ComboBoxItem Content="Coma (,)" Tag=","/>
+                            <ComboBoxItem Content="Punto y coma (;)" Tag=";"/>
+                            <ComboBoxItem Content="Tabulación" Tag="\t"/>
+                            <ComboBoxItem Content="Pipe (|)" Tag="|"/>
+                        </ComboBox>
+                    </DockPanel>
+                </StackPanel>
+
+                <!-- Archivo B -->
+                <StackPanel Grid.Column="1" Margin="5">
+                    <DockPanel>
+                        <Button Content="Cargar Archivo B" Command="{Binding LoadFileBCommand}" DockPanel.Dock="Right"/>
+                        <TextBox Text="{Binding FileBPath, Mode=TwoWay}" IsReadOnly="True"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,5">
+                        <TextBlock Text="Separador:" DockPanel.Dock="Left"/>
+                        <ComboBox SelectedValue="{Binding SelectedSeparatorB}" Width="100" HorizontalAlignment="Left">
+                            <ComboBoxItem Content="Coma (,)" Tag=","/>
+                            <ComboBoxItem Content="Punto y coma (;)" Tag=";"/>
+                            <ComboBoxItem Content="Tabulación" Tag="\t"/>
+                            <ComboBoxItem Content="Pipe (|)" Tag="|"/>
+                        </ComboBox>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- Vista previa de archivos -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Vista previa Archivo A -->
+            <GroupBox Grid.Column="0" Header="Vista previa Archivo A">
+                <DataGrid ItemsSource="{Binding FileAPreview}" AutoGenerateColumns="True"
+                          IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserReorderColumns="True" CanUserResizeColumns="True"
+                          CanUserSortColumns="True" AlternatingRowBackground="#F0F0F0"/>
+            </GroupBox>
+
+            <!-- Vista previa Archivo B -->
+            <GroupBox Grid.Column="1" Header="Vista previa Archivo B">
+                <DataGrid ItemsSource="{Binding FileBPreview}" AutoGenerateColumns="True"
+                          IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserReorderColumns="True" CanUserResizeColumns="True"
+                          CanUserSortColumns="True" AlternatingRowBackground="#F0F0F0"/>
+            </GroupBox>
+        </Grid>
+
+        <!-- Configuración de reglas -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Reglas de Match -->
+            <GroupBox Grid.Column="0" Header="Configuración de Match">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Agregar regla de match -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0" ItemsSource="{Binding FileAHeaders}"
+                                  SelectedItem="{Binding SelectedFileAColumn, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="1" Text="=" FontWeight="Bold"/>
+                        <ComboBox Grid.Column="2" ItemsSource="{Binding FileBHeaders}"
+                                  SelectedItem="{Binding SelectedFileBColumn, Mode=TwoWay}"/>
+                        <Button Grid.Column="3" Content="Agregar Match" Command="{Binding AddMatchRuleCommand}"/>
+                    </Grid>
+
+                    <!-- Lista de reglas de match -->
+                    <ListView Grid.Row="1" ItemsSource="{Binding MatchRules}" Margin="0,10,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Columna A" DisplayMemberBinding="{Binding ColumnA}" Width="150"/>
+                                <GridViewColumn Header="Columna B" DisplayMemberBinding="{Binding ColumnB}" Width="150"/>
+                                <GridViewColumn Header="Acciones" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Eliminar" Command="{Binding DataContext.RemoveMatchRuleCommand,
+                                                  RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                  CommandParameter="{Binding}" Padding="5,2"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+
+            <!-- Reglas de Transferencia -->
+            <GroupBox Grid.Column="1" Header="Configuración de Transferencia">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Selección de origen/destino -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <RadioButton Content="Desde Archivo A hacia B" IsChecked="{Binding IsSourceA}" Margin="5" VerticalContentAlignment="Center"/>
+                        <RadioButton Content="Desde Archivo B hacia A" IsChecked="{Binding IsSourceA, Converter={StaticResource InverseBooleanConverter}}" Margin="5" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Agregar regla de transferencia -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0" ItemsSource="{Binding SourceColumns}"
+                                  SelectedItem="{Binding SelectedSourceColumn, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="1" Text="→" FontWeight="Bold"/>
+                        <ComboBox Grid.Column="2" ItemsSource="{Binding DestinationColumns}"
+                                  SelectedItem="{Binding SelectedDestinationColumn, Mode=TwoWay}"/>
+                        <Button Grid.Column="3" Content="Agregar Transferencia" Command="{Binding AddTransferRuleCommand}"/>
+                    </Grid>
+
+                    <!-- Lista de reglas de transferencia -->
+                    <ListView Grid.Row="2" ItemsSource="{Binding TransferRules}" Margin="0,10,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Origen" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsSourceA, Converter={StaticResource BoolToABConverter}}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Columna Origen" DisplayMemberBinding="{Binding SourceColumn}" Width="120"/>
+                                <GridViewColumn Header="Columna Destino" DisplayMemberBinding="{Binding DestinationColumn}" Width="120"/>
+                                <GridViewColumn Header="Acciones" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Eliminar" Command="{Binding DataContext.RemoveTransferRuleCommand,
+                                                  RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                  CommandParameter="{Binding}" Padding="5,2"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!-- Ejecución y progreso -->
+        <GroupBox Grid.Row="3" Header="Ejecución">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Controles de ejecución -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Content="Iniciar Comparación" Command="{Binding StartComparisonCommand}"
+                            IsEnabled="{Binding IsComparing, Converter={StaticResource InverseBooleanConverter}}"/>
+                    <Button Content="Pausar" Command="{Binding PauseComparisonCommand}"
+                            IsEnabled="{Binding IsComparing}"/>
+                    <Button Content="Continuar" Command="{Binding ResumeComparisonCommand}"
+                            IsEnabled="{Binding IsPaused}"/>
+                    <TextBlock Text="Empezar desde registro:" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                    <TextBox Text="{Binding StartIndex}" Width="80" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Barra de progreso -->
+                <ProgressBar Grid.Row="1" Height="20" Margin="5" Value="{Binding Progress}"
+                             Maximum="100" IsIndeterminate="{Binding IsComparing}"/>
+
+                <!-- Estadísticas -->
+                <Grid Grid.Row="2" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="Registros procesados:" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding ProcessedRecords}" Margin="5,0"/>
+                        <TextBlock Text="/" Margin="0"/>
+                        <TextBlock Text="{Binding TotalRecords}" Margin="5,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock Text="Matches:" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding MatchCount}" Margin="5,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock Text="No encontrados:" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding NotFoundCount}" Margin="5,0"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <!-- Exportación y API -->
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Exportación -->
+            <GroupBox Grid.Column="0" Header="Exportación">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Exportar Resultado Final" Command="{Binding ExportResultsCommand}"/>
+                    <Button Content="Exportar No Encontrados" Command="{Binding ExportNotFoundCommand}"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- API Server -->
+            <GroupBox Grid.Column="1" Header="API Server (Opcional)">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Puerto:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding ApiPort}" Margin="5" Width="80" HorizontalAlignment="Left"/>
+                    <Button Grid.Column="2" Content="Iniciar API" Command="{Binding StartApiServerCommand}" Margin="5,0"/>
+                    <Button Grid.Column="3" Content="Detener API" Command="{Binding StopApiServerCommand}" Margin="5,0"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>

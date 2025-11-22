@@ -1,0 +1,11 @@
+ID,Nombre,Apellido,Email,Telefono,Direccion,Ciudad,CodigoPostal,FechaRegistro
+1,Juan,Perez,juan.perez@email.com,555-1234,Calle Principal 123,Ciudad de Mexico,01000,2023-01-15
+2,Maria,Lopez,maria.lopez@email.com,555-2345,Avenida Central 456,Guadalajara,44100,2023-02-20
+3,Carlos,Rodriguez,carlos.rodriguez@email.com,555-3456,Boulevard Norte 789,Monterrey,64000,2023-03-10
+4,Ana,Martinez,ana.martinez@email.com,555-4567,Calle Sur 321,Puebla,72000,2023-04-05
+5,Pedro,Sanchez,pedro.sanchez@email.com,555-5678,Avenida Este 654,Tijuana,22000,2023-05-12
+6,Laura,Gonzalez,laura.gonzalez@email.com,555-6789,Boulevard Oeste 987,Merida,97000,2023-06-18
+7,Miguel,Hernandez,miguel.hernandez@email.com,555-7890,Calle Norte 159,Cancun,77500,2023-07-22
+8,Sofia,Diaz,sofia.diaz@email.com,555-8901,Avenida Sur 753,Acapulco,39300,2023-08-30
+9,Javier,Torres,javier.torres@email.com,555-9012,Boulevard Este 357,Veracruz,91700,2023-09-14
+10,Carmen,Flores,carmen.flores@email.com,555-0123,Calle Oeste 951,Oaxaca,68000,2023-10-25

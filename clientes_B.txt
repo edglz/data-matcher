@@ -1,0 +1,11 @@
+ID,Nombre,Apellido,Email,Telefono,Direccion,Ciudad,CodigoPostal,Saldo,UltimaCompra
+1,Juan,Perez,juan.perez@email.com,555-1234,Calle Principal 123,Ciudad de Mexico,01000,1500.50,2023-11-05
+3,Carlos,Rodriguez,carlos.rodriguez@email.com,555-3456,Boulevard Norte 789,Monterrey,64000,750.25,2023-10-20
+4,Ana,Martinez,ana.martinez@email.com,555-4567,Calle Sur 321,Puebla,72000,2100.75,2023-11-12
+6,Laura,Gonzalez,laura.gonzalez@email.com,555-6789,Boulevard Oeste 987,Merida,97000,980.30,2023-09-28
+8,Sofia,Diaz,sofia.diaz@email.com,555-8901,Avenida Sur 753,Acapulco,39300,1250.60,2023-11-01
+10,Carmen,Flores,carmen.flores@email.com,555-0123,Calle Oeste 951,Oaxaca,68000,1800.40,2023-10-15
+11,Roberto,Vargas,roberto.vargas@email.com,555-1122,Avenida Norte 258,Leon,37000,650.90,2023-11-08
+12,Elena,Mendoza,elena.mendoza@email.com,555-2233,Boulevard Sur 456,Queretaro,76000,1950.20,2023-10-30
+13,Daniel,Ortiz,daniel.ortiz@email.com,555-3344,Calle Este 753,Toluca,50000,820.15,2023-11-10
+14,Patricia,Ramirez,patricia.ramirez@email.com,555-4455,Avenida Oeste 159,Morelia,58000,1100.70,2023-09-15
